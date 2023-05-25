@@ -1,0 +1,6 @@
+/.vscode/
+out
+*.code-workspace
+*.png
+*.jpeg
+*.jpg
