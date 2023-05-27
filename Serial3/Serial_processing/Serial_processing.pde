@@ -148,8 +148,8 @@ void setup()
     colorMode(HSB, 360, 100, 100);
     textAlign(CENTER, CENTER);
 
-    println(Serial.list());
-    arduino = new Serial(this, portName, 115200);
+   // println(Serial.list());
+   arduino = new Serial(this, portName, 115200);
 
     button = new Button(width/2, height/2, 200, 100, color(25, 95, 100));
 }
@@ -174,4 +174,3 @@ void stop()
     arduino.stop();
     super.stop();
 }
-
