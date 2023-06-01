@@ -33,15 +33,16 @@ public class Machine
 
         weapons = new ArrayList<Weapon>();
         damageEffect = new SoundFile(parent, "arms01/game_explosion1.mp3");
+        damageEffect.amp(0.2);
 
         ellipseMode(CENTER);
     }
 
     void addWeapon(Weapon w)
     {
-        w.isAvailable = true;
+        w.available();
         weapons.add(w);
-    }
+    }   
 
     void isCollision(ArrayList<Projectile> p)
     {

@@ -28,3 +28,41 @@ public class Player extends Machine
         super.draw();
     }
 }
+
+public class ArduinoControlPlayer extends Player
+{
+    Serial arduino;
+    final String portName = "COM3";
+    final int lf = 10;
+    final int baudRate = 115200;
+
+    ArduinoControlPlayer(PApplet parent, float x, float y, float size, color c, float hitPoint)
+    {
+        super(parent, x, y, size, c, hitPoint);
+        arduino = new Serial(parent, portName, baudRate);
+    }
+
+    void move()
+    {
+        while(arduino.available() >= 1)
+        {
+            arduino.read();
+        }
+        x = map(float(arduino.readStringUntil(lf)), 0, 50.0, 0, width);
+        y = height-100;
+    }    
+}
+
+public class FreeMousePlayer extends Player
+{
+    FreeMousePlayer(PApplet parent, float x, float y, float size, color c, float hitPoint)
+    {
+        super(parent, x, y, size, c, hitPoint);
+    }
+
+    void move()
+    {
+        x = mouseX;
+        y = mouseY;
+    }
+}
