@@ -149,7 +149,7 @@ void setup()
     textAlign(CENTER, CENTER);
 
    // println(Serial.list());
-   arduino = new Serial(this, portName, 115200);
+    arduino = new Serial(this, portName, 115200);
 
     button = new Button(width/2, height/2, 200, 100, color(25, 95, 100));
 }
