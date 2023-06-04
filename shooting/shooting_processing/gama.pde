@@ -23,26 +23,27 @@ public class Game
         enemys = new ArrayList<Enemy>();
         Enemy e;
         e = new Enemy(parent, 0, 10, 30, color(0, 0, 255), 100);
-        e.addWeapon(new RotateRight(parent, width/2, height/2));
-        e.addWeapon(new RotateLeft(parent, width/2, height/2));
+        e.addWeapon(new Radial3(parent, width/2, height/2));
+        //e.addWeapon(new Missile(parent, width/2, height/2));
         enemys.add(e);
 
-
+        
         e = new Enemy(parent, 20, 10, 30, color(0, 0, 255), 100);
-        e.addWeapon(new Housya(parent, width/2, height/2));
-        e.addWeapon(new Ougi(parent, width/2, height/2));
+        e.addWeapon(new Radial2(parent, width/2, height/2));
+        e.addWeapon(new Missile(parent, width/2, height/2));
         enemys.add(e);
-
+        /*
         e = new Enemy(parent, -20, 10, 30, color(0, 0, 255), 100);
-        e.addWeapon(new RotateLeft(parent, width/2, height/2));
-        e.addWeapon(new RotateRight(parent, width/2, height/2));
+        e.addWeapon(new Radial2(parent, width/2, height/2));
+        e.addWeapon(new Radial(parent, width/2, height/2));
         enemys.add(e);
+        */
 
-        player = new Player(parent, width/2, height/2, 20, color(0, 255, 0), 100);
+        player = new ArduinoControlPlayer(parent, width/2, height/2, 20, color(0, 255, 0), 100);
         player.addWeapon(new Laser(parent, width/2, height/2));
-        player.weapons.get(player.weapons.size()-1).c = color(255,0,0);
+        player.weapons.get(player.weapons.size()-1).c = color(0,0,255);
         player.addWeapon(new Ougi2(parent, width/2, height/2));
-        player.weapons.get(player.weapons.size()-1).c = color(255,0,0);
+        player.weapons.get(player.weapons.size()-1).c = color(0,0,255);
 
         textAlign(CENTER, BOTTOM);
 
@@ -50,6 +51,7 @@ public class Game
     }
 
     void update()
+
     {
         if(state == 0)
         {
@@ -57,12 +59,9 @@ public class Game
             {
                 state = 1;
             }
-
-            player.update();
-
             for(int i = 0; i < enemys.size(); i ++)
             {
-                enemys.get(i).update();
+                
                 for(int j = 0; j < enemys.get(i).weapons.size(); j ++)
                 {
                     player.isCollision(enemys.get(i).weapons.get(j).projectiles);
@@ -73,11 +72,14 @@ public class Game
                     enemys.get(i).isCollision(player.weapons.get(j).projectiles);
                     player.weapons.get(j).satTargets(enemys.get(i).x, enemys.get(i).y);
                 }
+                enemys.get(i).update();
                 if(!enemys.get(i).isAlive())
                 {
                     enemys.remove(i);
                 }
+                
             }
+            player.update();
 
             if(!player.isAlive())
             {

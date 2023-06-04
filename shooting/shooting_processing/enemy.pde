@@ -14,8 +14,8 @@ public class Enemy extends Machine
 
     void move()
     {
-        this.x = width/2 * sin(counter/159.0 + phase) + width/2;
-        this.y = height/6 * cos(counter/59.0 + phase) + 200;
+        this.x = width/3 * sin(counter/199.0 + phase) + width/2;
+        this.y = height/11 * cos(counter/279.0 + phase) + 200;
         counter ++;
     }
 

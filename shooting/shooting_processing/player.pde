@@ -32,7 +32,7 @@ public class Player extends Machine
 public class ArduinoControlPlayer extends Player
 {
     Serial arduino;
-    final String portName = "COM3";
+    final String portName = "COM5";
     final int lf = 10;
     final int baudRate = 115200;
 
@@ -44,12 +44,25 @@ public class ArduinoControlPlayer extends Player
 
     void move()
     {
-        while(arduino.available() >= 1)
+        if(arduino.available() > 0)
+        {
+            float recv = float(arduino.readStringUntil(lf));
+            if(10 > recv)
+            {
+                recv = 10.0;
+            }
+            if(recv > 40)
+            {
+                recv = 40.0;
+            }
+            x = map(recv, 10.0, 40.0, 0, width);
+            y = height-100;
+        }
+        while(arduino.available() > 0)
         {
             arduino.read();
         }
-        x = map(float(arduino.readStringUntil(lf)), 0, 50.0, 0, width);
-        y = height-100;
+
     }    
 }
 

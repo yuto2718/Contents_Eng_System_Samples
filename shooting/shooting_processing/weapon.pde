@@ -1,20 +1,5 @@
 import processing.sound.*;
 
-public class Coordinate
-{
-    float x,y;
-    Coordinate()
-    {
-
-    }
-    Coordinate(float x, float y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-}
-
-
 public class Weapon
 {
     float x, y;
@@ -58,13 +43,13 @@ public class Weapon
         }
 
         this.projectiles = new ArrayList<Projectile>();
+        this.targets = new ArrayList<Coordinate>();
 
         ellipseMode(CENTER);
     }
 
     void satTargets(float x, float y)
     {
-
     }
 
     void available()
@@ -122,7 +107,7 @@ public class Weapon
 
     boolean isCollision(float x, float y, float size)
     {
-        return getDistance(x, y, this.x, this.y) < (size 1+ this.size)/2;
+        return getDistance(x, y, this.x, this.y) < (size + this.size)/2;
     } 
 
     protected float getDistance(float x1, float y1, float x2, float y2)
@@ -201,9 +186,9 @@ public class Ougi2 extends Weapon
 }
 
 
-public class Housya extends Weapon
+public class Radial extends Weapon
 {
-    Housya(PApplet parent, float x, float y)
+    Radial(PApplet parent, float x, float y)
     {
         super(parent, x, y, 10.0, 8.0, color(255,100, 50), 30, "arms01/laser3.mp3");
         soundOn = false;
@@ -214,10 +199,59 @@ public class Housya extends Weapon
 
     void genProjectile()
     {
-        for(int i = 0 ; i < 360; i=i+20){
+        for(int i = 0 ; i < 360; i=i+10){
             projectiles.add(new Projectile(this.x, this.y, abs(vy)*cos(radians(i)), -abs(vy)*sin(radians(i)), this.size, this.damage, this.c));
         }
         
+    }
+}
+
+public class Radial2 extends Weapon
+{
+    Radial2(PApplet parent, float x, float y)
+    {
+        super(parent, x, y, 10.0, 2.0, color(255,100, 50), 25, "arms01/laser3.mp3");
+        soundOn = false;
+        effect.amp(0.1);
+        this.vx = 0;
+        this.vy = -7;
+    }
+    void genProjectile(int phase)
+    {
+        for(int i = phase ; i < 360; i=i+10)
+        {
+            projectiles.add(new Projectile(this.x, this.y, abs(vy)*cos(radians(i)), -abs(vy)*sin(radians(i)), this.size, this.damage, this.c));
+        }
+    }
+
+    void update()
+    {
+        if(isAvailable)
+        {
+            if(this.coolTimeCounter == this.coolTime)
+            {
+                genProjectile(0);
+                if(soundOn)
+                {
+                    this.effect.play();
+                }
+            }
+            if(this.coolTimeCounter == this.coolTime + 5)
+            {
+                genProjectile(int(random(1, 10)));
+                if(soundOn)
+                {
+                    this.effect.play();
+                }
+                coolTimeCounter = 0;
+            }
+            this.coolTimeCounter ++;
+            updateProjectiles();
+        }
+        else
+        {
+            updateDisenable();
+        }
     }
 }
 
@@ -261,5 +295,99 @@ public class RotateRight extends Weapon
         projectiles.add(new Projectile(this.x, this.y, abs(vy)*cos(radians(i)), -abs(vy)*sin(radians(i)), this.size, this.damage, this.c));
         i = i - 3;
         
+    }
+}
+
+
+public class Missile extends Weapon
+{
+    Missile(PApplet parent, float x, float y)
+    {
+        super(parent, x, y, 15.0, 10.0, color(255,100, 50), 5, "Null");
+        this.soundOn = false;
+    }
+
+    void satTargets(float x, float y)
+    {
+        targets.add(new Coordinate(x, y));
+        println(x, y);
+    }
+
+    void updateSeeker()
+    {
+        for(int i = 0; i < projectiles.size(); i ++)
+        {
+            int index = 0;
+            double dist = 0;
+            double maxValue = 0;
+            for(int j = 0; j < targets.size(); j ++)
+            {
+                dist = targets.get(j).getDistance(projectiles.get(i).x, projectiles.get(i).y);
+                if( dist > maxValue)
+                {
+                    maxValue = dist;
+                    index = j;
+                }
+            }
+            if(targets.size() == 0)
+            {
+                projectiles.get(i).setTartget(new Coordinate(width/2, height/2));
+            }
+            else
+            {
+                projectiles.get(i).setTartget(targets.get(index));
+            }
+            
+        }
+    }
+
+    void genProjectile()
+    { 
+        int direction = int(random(0, 360));
+        projectiles.add(new Seeker(this.x, this.y, 3 * cos(radians(direction)), 3 * sin(radians(direction)), this.size, this.damage, this.c));
+    }
+
+    void update()
+    {
+        if(isAvailable)
+        {
+            if(this.coolTimeCounter >= this.coolTime)
+            {
+                genProjectile();
+                if(soundOn)
+                {
+                    this.effect.play();
+                    
+                }
+                coolTimeCounter = 0;
+            }
+            this.coolTimeCounter ++;
+            updateSeeker();
+            updateProjectiles();
+            targets.clear();
+        }
+        else
+        {
+            updateDisenable();
+        }
+    }
+}
+
+public class Radial3 extends Missile
+{
+    Radial3(PApplet parent, float x, float y)
+    {
+        super(parent, x, y);
+        this.soundOn = false;
+        vy = -7.5;
+        coolTime = 90;
+    }
+
+    void genProjectile()
+    {
+        for(int i = 0 ; i < 360; i = i + 3)
+        {
+            projectiles.add(new Seeker(this.x, this.y, abs(vy)*cos(radians(i)), -abs(vy)*sin(radians(i)), this.size, this.damage, this.c));
+        }
     }
 }
