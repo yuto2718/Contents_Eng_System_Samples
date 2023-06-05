@@ -51,9 +51,13 @@ public class ArduinoControlPlayer extends Player
             {
                 recv = 10.0;
             }
-            if(recv > 40)
+            else if(recv > 40)
             {
                 recv = 40.0;
+            }
+            else
+            {
+                return;
             }
             x = map(recv, 10.0, 40.0, 0, width);
             y = height-100;
@@ -62,7 +66,6 @@ public class ArduinoControlPlayer extends Player
         {
             arduino.read();
         }
-
     }    
 }
 
