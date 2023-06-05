@@ -26,18 +26,12 @@ public class Game
         e.addWeapon(new Radial3(parent, width/2, height/2));
         //e.addWeapon(new Missile(parent, width/2, height/2));
         enemys.add(e);
-
         
         e = new Enemy(parent, 20, 10, 30, color(0, 0, 255), 100);
         e.addWeapon(new Radial2(parent, width/2, height/2));
         e.addWeapon(new Missile(parent, width/2, height/2));
         enemys.add(e);
-        /*
-        e = new Enemy(parent, -20, 10, 30, color(0, 0, 255), 100);
-        e.addWeapon(new Radial2(parent, width/2, height/2));
-        e.addWeapon(new Radial(parent, width/2, height/2));
-        enemys.add(e);
-        */
+
 
         player = new ArduinoControlPlayer(parent, width/2, height/2, 20, color(0, 255, 0), 100);
         player.addWeapon(new Laser(parent, width/2, height/2));

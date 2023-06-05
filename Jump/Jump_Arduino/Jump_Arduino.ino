@@ -39,7 +39,7 @@ void loop()
         flag ++;
       }
     }
-    if(flag != 0 && abs(0.98 - a) < StationaryThreshold)
+    if(flag != 0 && abs(1.0 - a) < StationaryThreshold)
     {
       flag ++;
     }
