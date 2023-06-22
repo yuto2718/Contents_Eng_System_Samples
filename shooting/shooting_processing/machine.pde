@@ -2,23 +2,23 @@ import processing.sound.*;
 
 public class Machine
 {
-    float x, y;
-    float size;
-    float hitPoint;
-    color c;
+    float x, y; //Machineの位置
+    float size; //大きさ
+    float hitPoint;//HP
+    color c;       //色
 
-    ArrayList<Weapon> weapons;
+    ArrayList<Weapon> weapons;  //所持しているWeaponの配列
 
-    PApplet parent;
+    PApplet parent;             //Sound再生用にPApplet
 
-    int invincibleCounter;
-    int invencibleTime;
-    boolean collisionFlag;
+    int invincibleCounter;      //無敵時間のカウンター
+    int invencibleTime;         //無敵時間
 
-    SoundFile damageEffect;
+    SoundFile damageEffect;     //ダメージを受けたときに鳴らす効果音
 
     Machine(PApplet parent, float x, float y, float size, color c, float hitPoint)
     {
+        //コンストラクタ
         this.x = x;
         this.y = y;
         this.size = size;
@@ -40,12 +40,14 @@ public class Machine
 
     void addWeapon(Weapon w)
     {
+        //武器を所持する
         w.available();
         weapons.add(w);
     }   
 
     void isCollision(ArrayList<Projectile> p)
     {
+        //Projectileに接触したか
         for(int i = 0; i < p.size(); i ++)
         {
             if(p.get(i).isCollision(this.x, this.y, this.size))
@@ -62,11 +64,13 @@ public class Machine
 
     boolean isAlive()
     {
+        //生存しているか
         return hitPoint > 0;
     }
 
     void update()
     {
+        //更新処理
         for(int i = 0; i < weapons.size(); i ++)
         {
             weapons.get(i).x = x;
@@ -81,6 +85,7 @@ public class Machine
 
     void draw()
     {
+        //描画処理
         noStroke();
         fill(c);
         ellipse(x,y,size,size);

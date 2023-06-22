@@ -2,23 +2,23 @@ import processing.sound.*;
 
 public class Weapon
 {
-    float x, y;
-    float vx,vy;
-    float size;
-    float damage;
-    color c;
+    float x, y; //位置，Projectileを射出する位置，使用状態でないアイテムとしての位置に使用
+    float vx,vy;//初速度 Projectileに与える初速度
+    float size; //Projectileのサイズ，使用状態でないアイテムとしての位置に使用
+    float damage; //ダメージ
+    color c;      //色
 
-    SoundFile effect;
-    int coolTime;
-    int coolTimeCounter;
-    int blinkCounter;
+    SoundFile effect;//発射時の音
+    int coolTime;    //クールタイム
+    int coolTimeCounter;//クールタイム用のカウンター
+    int blinkCounter;   //点滅に使用する予約
 
-    boolean isAvailable;
-    boolean soundOn = false;
-    ArrayList<Projectile> projectiles;
-    ArrayList<Coordinate> targets;
+    boolean isAvailable;//利用可能か（Machineに所有されているか）
+    boolean soundOn = false;//音のオンオフ
+    ArrayList<Projectile> projectiles;//発射したProjectileの配列
+    ArrayList<Coordinate> targets;    //ターゲットの配列 追尾するProjectileなどで使用
     
-    Weapon(PApplet parent, float x, float y, float size, float damage, color c, int coolTime, String fileName)
+    Weapon(PApplet parent, float x, float y, float size, float damage, color c, int coolTime, String fileName)//コンストラクタ
     {
         this.x = x;
         this.y = y;
@@ -48,22 +48,26 @@ public class Weapon
         ellipseMode(CENTER);
     }
 
-    void satTargets(float x, float y)
+    void satTargets(float x, float y) 
     {
+        //追尾するProjectileなどで使用
     }
 
     void available()
     {
         isAvailable = true;
+        //所持された状態へ遷移
     }
 
     void genProjectile()
     { 
         projectiles.add(new Projectile(this.x, this.y, this.vx, this.vy, this.size, this.damage, this.c));
+        //Projectileを発射する
     }
     
     void updateDisenable()
     {
+        //Machineに所持されていない状態の処理 : アイテム状態などを想定しているが現在は未実装
         coolTimeCounter = coolTime;
         for(int i = 0; i < projectiles.size(); i ++)
         {
@@ -73,6 +77,7 @@ public class Weapon
     
     void updateProjectiles()
     {
+        //Projectileの更新処理
         for(int i = 0; i < projectiles.size(); i ++)
         {
             projectiles.get(i).update();
@@ -85,9 +90,11 @@ public class Weapon
     
     void update()
     {
+        //Weaponの更新処理
         if(isAvailable)
         {
             if(this.coolTimeCounter >= this.coolTime)
+            //クールタイムが経過していれば，Projectileを発射
             {
                 genProjectile();
                 this.coolTimeCounter = 0;
@@ -107,16 +114,19 @@ public class Weapon
 
     boolean isCollision(float x, float y, float size)
     {
+        //接触判定 : アイテム状態での使用を想定，現在未使用
         return getDistance(x, y, this.x, this.y) < (size + this.size)/2;
     } 
 
     protected float getDistance(float x1, float y1, float x2, float y2)
     {
+        //距離計算
         return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
     }
 
     void draw()
     {
+        //描画処理
         blinkCounter ++;
         if(isAvailable)
         {
@@ -134,7 +144,7 @@ public class Weapon
     }
 }
 
-
+//以下具体的な武器の定義：Weaponの継承になっている．
 public class Laser extends Weapon
 {
     Laser(PApplet parent, float x, float y)

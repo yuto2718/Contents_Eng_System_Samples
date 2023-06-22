@@ -11,6 +11,7 @@ public class Game
 
     Game(PApplet parent)
     {
+        //コンストラクタ
         surface.setResizable(true); 
         surface.setSize(1000, 1000);
         frameRate(60);
@@ -20,6 +21,7 @@ public class Game
         font = createFont("Meiryo UI", 250);; 
         textFont(font, 50); 
         
+        //敵の設定
         enemys = new ArrayList<Enemy>();
         Enemy e;
         e = new Enemy(parent, 0, 10, 30, color(0, 0, 255), 100);
@@ -32,7 +34,7 @@ public class Game
         e.addWeapon(new Missile(parent, width/2, height/2));
         enemys.add(e);
 
-
+        //Playerの設定
         player = new ArduinoControlPlayer(parent, width/2, height/2, 20, color(0, 255, 0), 100);
         player.addWeapon(new Laser(parent, width/2, height/2));
         player.weapons.get(player.weapons.size()-1).c = color(0,0,255);
@@ -45,9 +47,10 @@ public class Game
     }
 
     void update()
-
     {
+        //更新処理 Player,Enemyのデータを交換，updateの呼び出し
         if(state == 0)
+        //ゲーム中
         {
             if(enemys.size() == 0)
             {
@@ -77,11 +80,13 @@ public class Game
 
             if(!player.isAlive())
             {
+                //死亡した場合の遷移
                 state = -1;
             }
         }
         else if(state == 2)
         {
+            //ゲーム開始待機
             if(keyPressed)
             {
                 state = 0;
@@ -89,6 +94,7 @@ public class Game
         }
         else if(state == -1 || state == 1)
         {
+            //ゲーム終了時の処理
             ;
         }
     }
@@ -114,6 +120,7 @@ public class Game
 
     void draw()
     {
+        //描画処理　ステートによって呼び出すものを変える
         background(255);
         if(state == 0)
         {

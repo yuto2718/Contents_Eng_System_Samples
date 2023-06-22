@@ -1,6 +1,6 @@
 import processing.sound.*;
 
-public class Enemy extends Machine
+public class Enemy extends Machine //敵　とりあえずリサージュ曲線で動く
 {
     int counter;
     float phase;

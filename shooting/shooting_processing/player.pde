@@ -1,6 +1,6 @@
 import processing.sound.*;
 
-public class Player extends Machine
+public class Player extends Machine //基本的なPlayer
 {
     SoundFile damageEffect;
     Player(PApplet parent, float x, float y, float size, color c, float hitPoint)
@@ -29,10 +29,10 @@ public class Player extends Machine
     }
 }
 
-public class ArduinoControlPlayer extends Player
+public class ArduinoControlPlayer extends Player //Arduinoのセンサの値を使用するPlayer
 {
     Serial arduino;
-    final String portName = "COM5";
+    //final String portName = "COM5";
     final int lf = 10;
     final int baudRate = 115200;
 
@@ -69,7 +69,7 @@ public class ArduinoControlPlayer extends Player
     }    
 }
 
-public class FreeMousePlayer extends Player
+public class FreeMousePlayer extends Player //マウスで自由に動けるPlayer
 {
     FreeMousePlayer(PApplet parent, float x, float y, float size, color c, float hitPoint)
     {
