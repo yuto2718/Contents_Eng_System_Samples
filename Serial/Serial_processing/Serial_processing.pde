@@ -2,7 +2,7 @@ import processing.serial.*;
 
 Serial arduino;
 final String portName = "COM5"; //仮想COMポートの名前 Arduinoに書き込むときに表示されているものと同じ
-final long baudRate = 115200;   //ボーレート Arduinoとそろえる
+final int baudRate = 115200;   //ボーレート Arduinoとそろえる
 final int lf = 10;  //改行文字のASCIIコード
 
 float recvData = 0; //受信したデータが入る

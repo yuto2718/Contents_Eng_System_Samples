@@ -2,7 +2,7 @@ import processing.serial.*;
 
 Serial arduino;
 final String portName = "COM5";         //Arduino書き込み時のポートと同じもの
-final long baudRate = 115200;
+final int baudRate = 115200;
 final int lf = 10;                      //改行文字
 final int hedder = int('H');            //ヘッダー
 
